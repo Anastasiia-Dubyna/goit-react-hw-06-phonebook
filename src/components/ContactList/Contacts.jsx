@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/contactsSlice';
 import { ContactStyle, ButtonStyle } from './Contacts.styled';
 
-export function Contacts({ contact, onDelItem }) {
-  const { name, number } = contact;
+export function Contacts({ contact }) {
+  const dispatch = useDispatch();
+  const { name, number, id } = contact;
+  const onDelItem = () => dispatch(deleteContact(id));
   return (
     <ContactStyle>
       <p>
@@ -20,5 +24,4 @@ Contacts.propTypes = {
     name: PropTypes.string,
     number: PropTypes.string,
   }),
-  onDelItem: PropTypes.func,
 };

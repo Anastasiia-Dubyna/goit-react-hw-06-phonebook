@@ -1,5 +1,9 @@
+import React from 'react';
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   FormStyle,
   InputStyle,
@@ -7,16 +11,22 @@ import {
   Label,
 } from './ContactForm.styled';
 
-export const ContactForm = ({ onSubmitHandler }) => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (onSubmitHandler({ name, number })) {
-      setName('');
-      setNumber('');
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    const searchResult = contacts.find(contact => contact.name === name);
+    if (searchResult) {
+      alert(`${name} is already in contacts`);
+      return false;
     }
+    dispatch(addContact({ name, number }));
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -44,8 +54,4 @@ export const ContactForm = ({ onSubmitHandler }) => {
       <ButtonStyle type="submit">Add contact</ButtonStyle>
     </FormStyle>
   );
-};
-
-ContactForm.propTypes = {
-  onAlert: PropTypes.func,
 };
