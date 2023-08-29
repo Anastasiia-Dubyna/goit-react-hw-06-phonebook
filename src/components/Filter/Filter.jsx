@@ -1,15 +1,11 @@
 import React from 'react';
-
-import { getFilter } from 'redux/selectors';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from 'redux/filterSlice';
 import { FilterStyle, FilterInput, FilterLabel } from './Filter.styled';
+import { useDispatch } from 'react-redux';
+import { setFilter } from 'redux/filterSlice';
 
 export const Filter = () => {
-  const filter = useSelector(getFilter);
   const dispatch = useDispatch();
 
-  const onChange = evt => dispatch(setFilter(evt.target.value));
   return (
     <FilterStyle>
       <FilterLabel>
@@ -17,8 +13,7 @@ export const Filter = () => {
         <FilterInput
           type="text"
           name="filter"
-          value={filter}
-          onChange={evt => onChange(evt)}
+          onChange={evt => dispatch(setFilter(evt.target.value))}
         ></FilterInput>
       </FilterLabel>
     </FilterStyle>
